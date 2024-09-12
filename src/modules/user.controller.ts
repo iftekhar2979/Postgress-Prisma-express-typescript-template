@@ -95,6 +95,59 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
+// Login
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  if (!email || !password) throw new Error(`Provide Valid User Details`);
+  // User Data Check
+  const validUser: any = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  if (!validUser) {
+    return res.status(404).json(
+      myResponse({
+        statusCode: 404,
+        status: "failed",
+        message: "User not found",
+      })
+    );
+  }
+  const validPassword = await bycrypt.compare(password, validUser.password);
+  if (validUser && validPassword) {
+    generateToken({
+      email: validUser.email,
+      id: validUser.id,
+      role: validUser.role,
+      name: validUser.name,
+    });
+    // console.log('token',generateToken(res, validUser.email))
+
+    res.status(200).json(
+      myResponse({
+        status: "success",
+        statusCode: 200,
+        data: {
+          email: validUser.email,
+          id: validUser.id,
+          role: validUser.role,
+          name: validUser.name,
+        },
+      })
+    );
+  } else {
+    res
+      .status(400)
+      .send({
+        status: "failed",
+        statusCode: 400,
+        message: "Invalid User Information",
+      });
+    // throw new Error(`Invalid User Details`);
+  }
+};
+
 const verifyCode = async (req: Request, res: Response) => {
   try {
     const { email, code } = req.body;
@@ -123,7 +176,7 @@ const verifyCode = async (req: Request, res: Response) => {
         })
       );
     }
-    console.log(user,code )
+    console.log(user, code);
     // Verify the code
     if (user.oneTimeOtp === parseFloat(code)) {
       await prisma.user.update({
@@ -141,7 +194,7 @@ const verifyCode = async (req: Request, res: Response) => {
         name: user.name,
         role: user.role,
       });
-    // Respond with success
+      // Respond with success
       res.status(200).json(
         myResponse({
           statusCode: 200,
@@ -186,7 +239,7 @@ const resendOtp = async (req: Request, res: Response) => {
       );
     }
 
-    const user :any= await prisma.user.findFirst({
+    const user: any = await prisma.user.findFirst({
       where: { email: email },
     });
 
@@ -201,7 +254,8 @@ const resendOtp = async (req: Request, res: Response) => {
     }
 
     // Generate a new OTP
-    const oneTimeCode =Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+    const oneTimeCode =
+      Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
     if (user.oneTimeCode === null) {
       return res.status(400).json(
@@ -242,130 +296,143 @@ const resendOtp = async (req: Request, res: Response) => {
   }
 };
 
-// const forgotPassword = async (req: Request, res: Response) => {
-//   try {
-//     const { email } = req.body;
-//     if (!email) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "Email are required",
-//         })
-//       );
-//     }
+const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "Email are required",
+        })
+      );
+    }
+    const user: any = await prisma.user.findFirst({
+      where: { email: email },
+    });
 
-//     const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "User not found",
+        })
+      );
+    }
 
-//     if (!user) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "User not found",
-//         })
-//       );
-//     }
+    const oneTimeCode =
+      Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
-//     const oneTimeCode =
-//       Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+    try {
+      sentOtpByEmail(email, oneTimeCode);
+    } catch (error) {
+      console.error("Failed to send verification email", error);
+      throw new Error("Error creating user");
+    }
+    await prisma.user.update({
+      where: { email: email },
+      data: {
+        isEmailVerified: true,
+        oneTimeOtp: oneTimeCode,
+      },
+    });
+    res.status(200).json(
+      myResponse({
+        statusCode: 200,
+        status: "success",
+        message: "A verification code is sent to your email",
+      })
+    );
+  } catch (error: any) {
+    console.error("Error in forgotPassword controller:", error);
+    res.status(500).json(
+      myResponse({
+        statusCode: 500,
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+      })
+    );
+  }
+};
 
-//     try {
-//       sentOtpByEmail(email, oneTimeCode);
-//     } catch (error) {
-//       console.error("Failed to send verification email", error);
-//       throw new Error("Error creating user");
-//     }
+const setPassword = async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body;
 
-//     user.oneTimeCode = oneTimeCode;
-//     await user.save();
+    if (!token || !password) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "Token or password are required",
+        })
+      );
+    }
+    const userData = verifyToken(token);
 
-//     res.status(200).json(
-//       myResponse({
-//         statusCode: 200,
-//         status: "success",
-//         message: "A verification code is sent to your email",
-//       })
-//     );
-//   } catch (error: any) {
-//     console.error("Error in forgotPassword controller:", error);
-//     res.status(500).json(
-//       myResponse({
-//         statusCode: 500,
-//         message: `Internal server error ${error.message}`,
-//         status: "Failed",
-//       })
-//     );
-//   }
-// };
+    console.log("userData", userData);
+    if (!userData) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "Invalid token",
+        })
+      );
+    }
 
-// const setPassword = async (req: Request, res: Response) => {
-//   try {
-//     const { token, password } = req.body;
+    const expireDate = new Date(userData.exp * 1000);
+    if (expireDate < new Date()) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "Token expired",
+        })
+      );
+    }
 
-//     if (!token || !password) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "Token or password are required",
-//         })
-//       );
-//     }
-//     const userData = verifyToken(token);
+    const user = await prisma.user.findFirst({
+      where: { id: userData.id },
+    });
 
-//     if (!userData) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "Invalid token",
-//         })
-//       );
-//     }
+    console.log(user);
+    if (!user) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "User not found",
+        })
+      );
+    }
+    let hashedPassword = await bycrypt.hash(password, 10);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+      },
+    });
 
-//     const expireDate = new Date(userData.exp * 1000);
-//     if (expireDate < new Date()) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "Token expired",
-//         })
-//       );
-//     }
+    res.status(200).json(
+      myResponse({
+        statusCode: 200,
+        status: "success",
+        message: "Password has been set successfully",
+      })
+    );
+  } catch (error: any) {
+    console.error("Error in setPassword controller:", error);
+    res.status(500).json(
+      myResponse({
+        statusCode: 500,
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+      })
+    );
+  }
+};
 
-//     const user = await userModel.findOne({ _id: userData.id });
-//     if (!user) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "User not found",
-//         })
-//       );
-//     }
-
-//     user.password = password;
-//     await user.save();
-
-//     res.status(200).json(
-//       myResponse({
-//         statusCode: 200,
-//         status: "success",
-//         message: "Password has been set successfully",
-//       })
-//     );
-//   } catch (error: any) {
-//     console.error("Error in setPassword controller:", error);
-//     res.status(500).json(
-//       myResponse({
-//         statusCode: 500,
-//         message: `Internal server error ${error.message}`,
-//         status: "Failed",
-//       })
-//     );
-//   }
-// };
-
-export { signUp,verifyCode,resendOtp };
+export { signUp, verifyCode, resendOtp, forgotPassword, setPassword,loginUser };

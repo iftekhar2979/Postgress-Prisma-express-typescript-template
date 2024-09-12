@@ -25,3 +25,9 @@
 {"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:01:28"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/resend-otp","service":"user-service","timestamp":"2024-09-12 17:09:27"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/resend-otp","service":"user-service","timestamp":"2024-09-12 17:09:54"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/resend-otp","service":"user-service","timestamp":"2024-09-12 17:10:26"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:22:05"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:22:20"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:23:20"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:24:13"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:25:43"}
