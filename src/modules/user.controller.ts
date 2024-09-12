@@ -173,69 +173,74 @@ const verifyCode = async (req: Request, res: Response) => {
   }
 };
 
-// const resendOtp = async (req: Request, res: Response) => {
-//   try {
-//     const { email } = req.body;
-//     if (!email) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "Email are required",
-//         })
-//       );
-//     }
+const resendOtp = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "Email are required",
+        })
+      );
+    }
 
-//     const user = await userModel.findOne({ email });
+    const user :any= await prisma.user.findFirst({
+      where: { email: email },
+    });
 
-//     if (!user) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "User not found",
-//         })
-//       );
-//     }
+    if (!user) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "User not found",
+        })
+      );
+    }
 
-//     // Generate a new OTP
-//     const oneTimeCode =
-//       Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+    // Generate a new OTP
+    const oneTimeCode =Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
-//     if (user.oneTimeCode === null) {
-//       return res.status(400).json(
-//         myResponse({
-//           statusCode: 400,
-//           status: "failed",
-//           message: "OTP already sent",
-//         })
-//       );
-//     }
+    if (user.oneTimeCode === null) {
+      return res.status(400).json(
+        myResponse({
+          statusCode: 400,
+          status: "failed",
+          message: "OTP already sent",
+        })
+      );
+    }
 
-//     user.oneTimeCode = oneTimeCode;
+    await prisma.user.update({
+      where: { email: email },
+      data: {
+        isEmailVerified: true,
+        oneTimeOtp: null,
+      },
+    });
 
-//     await user.save();
+    await sentOtpByEmail(email, oneTimeCode);
 
-//     await sentOtpByEmail(email, oneTimeCode);
-
-//     res.status(200).json(
-//       myResponse({
-//         statusCode: 200,
-//         status: "success",
-//         message: "OTP has been resent successfully",
-//       })
-//     );
-//   } catch (error) {
-//     console.error("Error resending OTP:", error);
-//     res.status(500).json(
-//       myResponse({
-//         statusCode: 500,
-//         status: "Failed",
-//         message: "Failed to resend OTP",
-//       })
-//     );
-//   }
-// };
+    res.status(200).json(
+      myResponse({
+        statusCode: 200,
+        status: "success",
+        message: "OTP has been resent successfully",
+      })
+    );
+  } catch (error) {
+    console.error("Error resending OTP:", error);
+    res.status(500).json(
+      myResponse({
+        statusCode: 500,
+        status: "Failed",
+        message: "Failed to resend OTP",
+      })
+    );
+  }
+};
 
 // const forgotPassword = async (req: Request, res: Response) => {
 //   try {
@@ -363,4 +368,4 @@ const verifyCode = async (req: Request, res: Response) => {
 //   }
 // };
 
-export { signUp,verifyCode };
+export { signUp,verifyCode,resendOtp };

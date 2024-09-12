@@ -22,3 +22,6 @@
 {"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:00:09"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 17:00:43"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:01:00"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:01:28"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/resend-otp","service":"user-service","timestamp":"2024-09-12 17:09:27"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/resend-otp","service":"user-service","timestamp":"2024-09-12 17:09:54"}
