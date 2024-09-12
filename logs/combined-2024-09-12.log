@@ -1,0 +1,24 @@
+{"level":"info","message":"Incoming request: GET /check-db","service":"user-service","timestamp":"2024-09-12 11:16:21"}
+{"level":"info","message":"Incoming request: GET /favicon.ico","service":"user-service","timestamp":"2024-09-12 11:16:21"}
+{"level":"info","message":"Incoming request: GET /check-db","service":"user-service","timestamp":"2024-09-12 15:43:41"}
+{"level":"info","message":"Incoming request: GET /favicon.ico","service":"user-service","timestamp":"2024-09-12 15:43:42"}
+{"level":"info","message":"Incoming request: GET /","service":"user-service","timestamp":"2024-09-12 15:43:45"}
+{"level":"info","message":"Root endpoint hit","service":"user-service","timestamp":"2024-09-12 15:43:45"}
+{"level":"info","message":"Incoming request: POST /api/v1/register","service":"user-service","timestamp":"2024-09-12 15:51:36"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 15:54:44"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 15:55:12"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 15:56:08"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 15:56:41"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:01:46"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:03:17"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:06:07"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:06:55"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:07:00"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:07:38"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:09:18"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 16:31:10"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 16:58:49"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 16:59:10"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:00:09"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-12 17:00:43"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/verify-code","service":"user-service","timestamp":"2024-09-12 17:01:00"}
