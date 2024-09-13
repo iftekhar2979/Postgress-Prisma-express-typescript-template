@@ -13,12 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Rank {
-  BASIC
-  MID
-  PREMIUM
-  LUXURY
-}
 
 model User {
   id      Int      @id @default(autoincrement())
@@ -35,4 +29,107 @@ model User {
   isBlock Boolean @default(false)
 }
 
+model Product {
+  id Int @id @default(autoincrement())
+  phoneName String @db.VarChar(255)
+  type String
+  category String
+  brand String
+  isFiveG Boolean
+  photoUrl String
+  storage Float
+  camera Int
+  cameraRank Int
+  ramRank Int
+  ram Float
+  rom Float
+  screenSize Float
+  eol Boolean
+  phoneRank Int
+  isActivition Boolean
+  activitionFree Float
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
 
+  // Optional one-to-one relation with Details
+  productDetailsId Int? @unique
+  details Details? @relation(fields: [productDetailsId], references: [id], onDelete: Cascade)
+}
+
+model Details {
+  id Int @id @default(autoincrement())
+  phoneLineUp String
+  retailPrice Float
+  upgradePrice Float
+  lineLimit Int
+  service_cost_for_new_number Float
+  saving_service_cost_for_new_number Float
+  flex_up_non_port Float
+  saving_cost_for_flex_up_non_port Float
+  flex_plus_non_port Float
+  saving_flex_plus_non_port Float
+  flex_start_id_port Float
+  saving_flex_start_id_port Float
+  flex_up_id_port Float
+  saving_flex_up_id_port Float
+  flex_plus_id_port Float
+  saving_flex_plus_id_port Float
+    createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+
+  // One-to-one relation with Product
+  product Product?
+}
+
+model ServiceTypeAndRatePrice{
+  id Int @id @default(autoincrement())
+  alwaysConnected  Float @default(45)
+  flex_up_non_port Float @default(65)
+  flex_plus_non_port Float @default(75)
+  flex_start_id_port Float @default(55)
+  flex_up_id_port Float @default(65)
+  flex_plus_id_port Float @default(75)
+}
+
+model Accessories{
+    id Int @id @default(autoincrement())
+    type String
+    unitPrice Float
+    category String
+   createdAt DateTime @default(now()) @db.Timestamp(6)
+   updatedAt DateTime? @updatedAt @db.Timestamp(6)
+}
+
+model Store{
+  id Int @id @default(autoincrement())
+  address String
+  name  String?
+  taxRate Float
+
+  // One-to-many relation with Employee
+  employees Employee[] 
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+}
+
+model WhiteListedDevice{
+   id Int @id @default(autoincrement())
+   ip String
+   deviceName String
+   createdAt DateTime @default(now()) @db.Timestamp(6)
+   updatedAt DateTime? @updatedAt @db.Timestamp(6)
+}
+
+model Employee{
+ id Int @id @default(autoincrement())
+name String
+employeeId String
+phone String
+email String
+  // Foreign key reference to Store
+  storeId Int?
+  store Store? @relation(fields: [storeId], references: [id],onDelete:Cascade)
+createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+} 

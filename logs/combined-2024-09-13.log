@@ -1,0 +1,2 @@
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-13 16:48:58"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/register","service":"user-service","timestamp":"2024-09-13 16:49:02"}
