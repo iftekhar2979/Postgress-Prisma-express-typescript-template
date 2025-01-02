@@ -31,3 +31,6 @@
 {"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:23:20"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:24:13"}
 {"level":"info","message":"Incoming request: POST /api/v1/users/forget-password","service":"user-service","timestamp":"2024-09-12 17:25:43"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/login","service":"user-service","timestamp":"2024-09-12 17:38:08"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/login","service":"user-service","timestamp":"2024-09-12 17:38:16"}
+{"level":"info","message":"Incoming request: POST /api/v1/users/login","service":"user-service","timestamp":"2024-09-12 17:38:45"}

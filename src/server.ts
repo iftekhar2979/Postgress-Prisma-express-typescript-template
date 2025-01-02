@@ -22,7 +22,6 @@ async function main() {
     console.log(error);
   }
 }
-
 main();
 
 // process.on("unhandledRejection", (err) => {

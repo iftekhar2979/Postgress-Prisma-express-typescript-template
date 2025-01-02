@@ -7,7 +7,7 @@ dotenv.config({
 })
 
 export default {
-    port: process.env.PORT || 8000,  // Use the port from .env or default to 5000
+    port: process.env.PORT || 3030,  // Use the port from .env or default to 5000
     databaseURL: process.env.DATABASE_URL, // Use the MongoDB connection string from .env or default to another database
     uploadFolder: process.env.UPLOAD_FOLDER,  // Use the upload folder from .env or default to 'public/images'
     maxFileSize: process.env.MAX_FILE_SIZE || 5242880,  // Use the max file size from .env or default to 5MB
